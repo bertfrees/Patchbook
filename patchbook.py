@@ -9,6 +9,8 @@ import re
 import os
 import argparse
 import json
+import tempfile
+import subprocess
 
 # Parser INFO
 parserVersion = "b3"
@@ -424,14 +426,8 @@ def graphviz():
     for module in sorted(mainDict["modules"]):
         # Get all outgoing connections:
         outputs = mainDict["modules"][module]["connections"]["out"]
-        module_outputs = ""
-        out_count = 0
         for out in sorted(outputs):
-            out_count += 1
             out_formatted = "_" + re.sub('[^A-Za-z0-9]+', '', out)
-            module_outputs += "<" + out_formatted + "> " + out.upper()
-            if out_count < len(outputs.keys()):
-                module_outputs += " | "
             connections = outputs[out]
             for c in connections:
                 line_style_array = []
@@ -454,37 +450,192 @@ def graphviz():
                         " ", "") + ":" + in_formatted + ":w " + line_style
                 conn.append([c["input_port"], connection_line])
 
-        # Get all incoming connections:
-        inputs = mainDict["modules"][module]["connections"]["in"]
-        module_inputs = ""
-        in_count = 0
-        for inp in sorted(inputs):
-            inp_formatted = "_" + re.sub('[^A-Za-z0-9]+', '', inp)
-            in_count += 1
-            module_inputs += "<" + inp_formatted + "> " + inp.upper()
-            if in_count < len(inputs.keys()):
-                module_inputs += " | "
+        # If there is a template for the module, use it to render the module
+        # Also validate the connections and parameters
+        templates_dir = os.path.dirname(os.path.realpath(__file__)) + "/Modules"
+        template_file = templates_dir + "/" + re.sub(r" .+$", "", module).upper()
+        if os.path.isfile(template_file):
+            lines = (line.rstrip('\n') for line in open(template_file))
+            line = next(lines)
+            line_nr = 1
+            if line != "ports:":
+                print("ERROR parsing template " + template_file + " (line " + str(line_nr) + ")"
+                      + ": expected 'ports:'")
+                sys.exit(1)
+            line = next(lines)
+            line_nr += 1
+            ports = []
+            supported_params = {}
+            lambdas = {}
+            port_re = re.compile(r"^ *- *([^ ]+) *$")
+            while line != "---":
+                m = port_re.search(line)
+                if m:
+                    ports.append(m.group(1))
+                elif line == "params:":
+                    line = next(lines)
+                    line_nr += 1
+                    break
+                else:
+                    print("ERROR parsing template " + template_file + " (line " + str(line_nr) + ")"
+                          + ": expected a port definition or 'params:' or '---'")
+                    sys.exit(1)
+                line = next(lines)
+                line_nr += 1
+            param_re = re.compile(r"^ *([^ :]+) *: */([^/]+)/ *$")
+            while line != "---":
+                m = param_re.search(line)
+                if m:
+                    supported_params[m.group(1)] = re.compile(m.group(2))
+                elif line == "lambdas:":
+                    line = next(lines)
+                    line_nr += 1
+                    break
+                else:
+                    print("ERROR parsing template " + template_file + " (line " + str(line_nr) + ")"
+                          + ": expected a parameter definition or 'lambdas:' or '---'")
+                    sys.exit(1)
+                line = next(lines)
+                line_nr += 1
+            lambda_re = re.compile(r"^ *([^ :]+) *: *(.+)$")
+            while line != "---":
+                m = lambda_re.search(line)
+                if m:
+                    if m.group(2) == '|':
+                        lambda_def = ''
+                        line = next(lines)
+                        line_nr += 1
+                        indent = re.sub('^( +)[^ ].*$', '\\1', line)
+                        while line.startswith(indent):
+                            lambda_def += (line[len(indent):] + '\n')
+                            line = next(lines)
+                            line_nr += 1
+                    else:
+                        lambda_def = m.group(2)
+                        line = next(lines)
+                        line_nr += 1
+                    lambdas[m.group(1)] = (lambda d: lambda *argv: re.sub(template_re, replace_in_template({'argv': argv}), d))(lambda_def)
+                else:
+                    print("ERROR parsing template " + template_file + " (line " + str(line_nr) + ")"
+                          + ": expected a lambda definition or '---'")
+                    sys.exit(1)
+            inputs = mainDict["modules"][module]["connections"]["in"]
+            for inp in inputs:
+                inp = re.sub('[^A-Za-z0-9]+', '', inp)
+                if not inp in ports:
+                    print("ERROR: port '" + inp + "' is not defined in template " + template_file)
+                    sys.exit(1)
+            for out in outputs:
+                out = re.sub('[^A-Za-z0-9]+', '', out)
+                if not out in ports:
+                    print("ERROR: port '" + out + "' is not defined in template " + template_file)
+                    sys.exit(1)
+            params = mainDict["modules"][module]["parameters"]
+            for param in params:
+                if not param in supported_params:
+                    print("ERROR: parameter '" + param + "' is not defined in template " + template_file)
+                    sys.exit(1)
+                param_value = params[param]
+                if not re.match(supported_params[param], param_value):
+                    print("ERROR: invalid parameter '" + param + " = " + param_value
+                          + "' (parameter '" + param + "' defined in " + template_file + ")")
+                    sys.exit(1)
+            for param in supported_params:
+                if not param in params:
+                    params[param] = None
+            template = "\n".join(lines)
+            template_re = re.compile(r"{{([^ /#}]+)}}|{{#([^ #}]+)}}(.+?){{/\2}}|{%(.+?)%}", re.DOTALL)
+            def replace_in_template(ctxt=None):
+                ctxt = ctxt or {}
+                ctxt = ctxt.copy()
+                ctxt.update(params)
+                ctxt.update(lambdas)
+                def fn(match):
+                    tag = match.group(1) or match.group(2)
+                    if match.group(1):
+                        if tag == "curdir":
+                            return templates_dir
+                        elif tag in params:
+                            return params[tag]
+                        elif tag in supported_params:
+                            return ""
+                        else:
+                            print("ERROR parsing template " + template_file + ": can not render {{" + tag + "}}: "
+                                  + "parameter '" + tag + "' not defined")
+                            sys.exit(1)
+                    elif match.group(3):
+                        content = match.group(3)
+                        content = re.sub(template_re, replace_in_template(), content)
+                        if tag == "render_svg":
+                            tmp_file = tempfile.NamedTemporaryFile('w', suffix='.svg', delete=False)
+                            tmp_file.write(content)
+                            tmp_file.close()
+                            # Convert SVG to PNG
+                            png_file_name = re.sub('svg$', 'png', tmp_file.name)
+                            cmd = ['convert', tmp_file.name, png_file_name]
+                            if debugMode:
+                                print('Running ImageMagick: ' + str(cmd))
+                            proc = subprocess.Popen(cmd, cwd=templates_dir)
+                            proc.wait()
+                            if proc.returncode == 0:
+                                return png_file_name
+                            else:
+                                print("ERROR rendering template " + template_file + ": SVG could not be rendered:\n\n" + content)
+                                sys.exit(1)
+                        elif tag in lambdas:
+                            return lambdas[tag](content)
+                        else:
+                            print("ERROR parsing template " + template_file + ": can not render {{#" + tag + "}}: "
+                                  + "function '" + tag + "' not defined")
+                            sys.exit(1)
+                    else:
+                        return eval(match.group(4), ctxt)
+                return fn
+            final_box = module.replace(" ", "") + "[" + re.sub(template_re, replace_in_template(), template) + "]"
 
-        # Get all parameters:
-        params = mainDict["modules"][module]["parameters"]
-        module_params = ""
-        param_count = 0
-        for par in sorted(params):
-            param_count += 1
-            module_params += par.title() + " = " + params[par]
-            if param_count < len(params.keys()):
-                module_params += r'\n'
-
-        # If module contains parameters
-        if module_params != "":
-            # Add them below module name
-            middle = "{{" + module.upper() + "}|{" + module_params + "}}"
         else:
-            # Otherwise just display module name
-            middle = module.upper()
+            # Get all outgoing connections:
+            module_outputs = ""
+            out_count = 0
+            for out in sorted(outputs):
+                out_count += 1
+                out_formatted = "_" + re.sub('[^A-Za-z0-9]+', '', out)
+                module_outputs += "<" + out_formatted + "> " + out.upper()
+                if out_count < len(outputs.keys()):
+                    module_outputs += " | "
 
-        final_box = module.replace(
-            " ", "") + "[label=\"{ {" + module_inputs + "}|" + middle + "| {" + module_outputs + "}}\"  shape=Mrecord]"
+            # Get all incoming connections:
+            inputs = mainDict["modules"][module]["connections"]["in"]
+            module_inputs = ""
+            in_count = 0
+            for inp in sorted(inputs):
+                inp_formatted = "_" + re.sub('[^A-Za-z0-9]+', '', inp)
+                in_count += 1
+                module_inputs += "<" + inp_formatted + "> " + inp.upper()
+                if in_count < len(inputs.keys()):
+                    module_inputs += " | "
+
+            # Get all parameters:
+            params = mainDict["modules"][module]["parameters"]
+            module_params = ""
+            param_count = 0
+            for par in sorted(params):
+                param_count += 1
+                module_params += par.title() + " = " + params[par]
+                if param_count < len(params.keys()):
+                    module_params += r'\n'
+
+            # If module contains parameters
+            if module_params != "":
+                # Add them below module name
+                middle = "{{" + module.upper() + "}|{" + module_params + "}}"
+            else:
+                # Otherwise just display module name
+                middle = module.upper()
+
+            final_box = module.replace(
+                " ", "") + "[label=\"{ {" + module_inputs + "}|" + middle + "| {" + module_outputs + "}}\"  shape=Mrecord]"
+
         print(final_box)
         total_string += final_box + "; "
 
