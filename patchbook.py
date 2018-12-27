@@ -144,7 +144,7 @@ def regexLine(line):
     if debugMode:
         print("Cheking input for connections...")
     re_filter = re.compile(
-        r"\-\s(.+)[(](.+)[)]\s(\>\>|\-\>|[a-z]\>)\s(.+)[(](.+)[)]\s(\[.+\])?$")
+        r"\-\s(.+)[(](.+)[)]\s+(\>\>|\-\>|[a-z]\>)\s(.+)[(](.+)[)]\s(\[.+\])?$")
     re_results = re_filter.search(line)
     try:
         results = re_results.groups()
