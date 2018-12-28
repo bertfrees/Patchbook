@@ -1,0 +1,109 @@
+ports:
+  - inh
+  - inl
+  - cv1
+  - cv2
+  - buscv
+  - busctrl
+  - lp
+  - bp
+  - hp
+params:
+  freq:      /([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°/
+  cv1:       /([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°/
+  resonance: /([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°/
+lambdas:
+  ae_pot: |
+    <g transform="rotate({% argv[0] %}, 0, 0)">
+      <circle cx="0" cy="0" r="19" fill="#000"/>
+      <rect x="-2" y="4" height="12" width="5" fill="#fff"/>
+    </g>
+---
+image="{{#render_svg}}
+  <svg xmlns="http://www.w3.org/2000/svg" width="160" height="640">
+    <image x="0" y="0" width="160" height="640" xlink:href="AE_SVFILTER.png" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+    <g transform="translate(62, 347)">
+      {% ae_pot(freq or '40') %}
+    </g>
+    <g transform="translate(62, 443)">
+      {% ae_pot(cv1 or '40') %}
+    </g>
+    <g transform="translate(62, 539)">
+      {% ae_pot(resonance or '40') %}
+    </g>
+  </svg>
+{{/render_svg}}"
+shape=plaintext
+label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="0">
+    <TR>
+      <TD FIXEDSIZE="true"             ROWSPAN="17" HEIGHT="480" WIDTH="12"                      ></TD>
+      <TD FIXEDSIZE="true" COLSPAN="4"              HEIGHT="24"  WIDTH="96"                      ></TD>
+      <TD FIXEDSIZE="true"             ROWSPAN="17" HEIGHT="480" WIDTH="12"                      ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_inh"          ></TD>
+      <TD FIXEDSIZE="true" COLSPAN="2" ROWSPAN="15" HEIGHT="86"  WIDTH="90"                      ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_lp"           ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_inl"          ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_cv1"          ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="8"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="8"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_cv2"          ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_bp"          ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_buscv"        ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_hp"           ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_busctrl"      ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true" COLSPAN="4"              HEIGHT="370" WIDTH="96"                      ></TD>
+    </TR>
+  </TABLE>
+>
