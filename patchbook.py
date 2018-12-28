@@ -421,7 +421,7 @@ def graphviz():
     conn = []
     total_string = ""
     print("-------------------------")
-    print("digraph G{\nrankdir = LR;\nsplines = polyline;\nordering=out;")
+    print("digraph G{\nrankdir = LR;\nsplines = spline;\nordering=out;")
     total_string += "digraph G{\nrankdir = LR;\nsplines = polyline;\nordering=out;\n"
     for module in sorted(mainDict["modules"]):
         # Get all outgoing connections:
