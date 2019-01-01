@@ -1,0 +1,91 @@
+ports:
+  - io1
+  - gate1
+  - io2
+  - gate2
+  - io3
+  - gate3
+  - 5v
+  - busgate
+  - 1a
+  - 1b
+  - 2a
+  - 2b
+  - 3a
+  - 3b
+---
+image="{{curdir}}/AE_3VCSWITCH.png"
+shape=plaintext
+label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="0">
+    <TR>
+      <TD FIXEDSIZE="true"             ROWSPAN="17" HEIGHT="480" WIDTH="12"                      ></TD>
+      <TD FIXEDSIZE="true" COLSPAN="4"              HEIGHT="24"  WIDTH="96"                      ></TD>
+      <TD FIXEDSIZE="true"             ROWSPAN="17" HEIGHT="480" WIDTH="12"                      ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_io1"           ></TD>
+      <TD FIXEDSIZE="true" COLSPAN="2" ROWSPAN="15" HEIGHT="86"  WIDTH="90"                      ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_1a"         ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_gate1"        ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_1b"           ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_io2"          ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_2a"           ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="8"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="8"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_gate2"        ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_2b"           ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_io3"          ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_3a"           ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_gate3"        ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_3b"           ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_5v"           ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_busgate"      ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true" COLSPAN="4"              HEIGHT="370" WIDTH="96"                      ></TD>
+    </TR>
+  </TABLE>
+>

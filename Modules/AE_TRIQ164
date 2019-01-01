@@ -1,0 +1,297 @@
+ports:
+  - clk
+  - reset
+  - mute1
+  - mute2
+  - repeatcv
+  - bclk
+  - bstart
+  - bstop
+  - out1
+  - out2
+  - out3
+  - out4
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+params:
+  track1step1:  /ON|OFF/
+  track1step2:  /ON|OFF/
+  track1step3:  /ON|OFF/
+  track1step4:  /ON|OFF/
+  track1step5:  /ON|OFF/
+  track1step6:  /ON|OFF/
+  track1step7:  /ON|OFF/
+  track1step8:  /ON|OFF/
+  track1step9:  /ON|OFF/
+  track1step10: /ON|OFF/
+  track1step11: /ON|OFF/
+  track1step12: /ON|OFF/
+  track1step13: /ON|OFF/
+  track1step14: /ON|OFF/
+  track1step15: /ON|OFF/
+  track1step16: /ON|OFF/
+  track2step1:  /ON|OFF/
+  track2step2:  /ON|OFF/
+  track2step3:  /ON|OFF/
+  track2step4:  /ON|OFF/
+  track2step5:  /ON|OFF/
+  track2step6:  /ON|OFF/
+  track2step7:  /ON|OFF/
+  track2step8:  /ON|OFF/
+  track2step9:  /ON|OFF/
+  track2step10: /ON|OFF/
+  track2step11: /ON|OFF/
+  track2step12: /ON|OFF/
+  track2step13: /ON|OFF/
+  track2step14: /ON|OFF/
+  track2step15: /ON|OFF/
+  track2step16: /ON|OFF/
+  track3step1:  /ON|OFF/
+  track3step2:  /ON|OFF/
+  track3step3:  /ON|OFF/
+  track3step4:  /ON|OFF/
+  track3step5:  /ON|OFF/
+  track3step6:  /ON|OFF/
+  track3step7:  /ON|OFF/
+  track3step8:  /ON|OFF/
+  track3step9:  /ON|OFF/
+  track3step10: /ON|OFF/
+  track3step11: /ON|OFF/
+  track3step12: /ON|OFF/
+  track3step13: /ON|OFF/
+  track3step14: /ON|OFF/
+  track3step15: /ON|OFF/
+  track3step16: /ON|OFF/
+  track4step1:  /ON|OFF/
+  track4step2:  /ON|OFF/
+  track4step3:  /ON|OFF/
+  track4step4:  /ON|OFF/
+  track4step5:  /ON|OFF/
+  track4step6:  /ON|OFF/
+  track4step7:  /ON|OFF/
+  track4step8:  /ON|OFF/
+  track4step9:  /ON|OFF/
+  track4step10: /ON|OFF/
+  track4step11: /ON|OFF/
+  track4step12: /ON|OFF/
+  track4step13: /ON|OFF/
+  track4step14: /ON|OFF/
+  track4step15: /ON|OFF/
+  track4step16: /ON|OFF/
+lambdas:
+  ae_led: |
+    <g>
+      <circle cx="0" cy="0" r="10" fill="#{% 'f00' if argv[0] == 'on' else 'baa' %}"/>
+    </g>
+---
+image="{{#render_svg}}
+  <svg xmlns="http://www.w3.org/2000/svg" width="320" height="640">
+    <image x="0" y="0" width="320" height="640" xlink:href="AE_TRIQ164.png" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+    <g transform="translate(76,  200)"> {% ae_led((track1step1  or 'OFF').lower()) %} </g>
+    <g transform="translate(76,  253)"> {% ae_led((track1step2  or 'OFF').lower()) %} </g>
+    <g transform="translate(76,  305)"> {% ae_led((track1step3  or 'OFF').lower()) %} </g>
+    <g transform="translate(76,  358)"> {% ae_led((track1step4  or 'OFF').lower()) %} </g>
+    <g transform="translate(76,  410)"> {% ae_led((track1step5  or 'OFF').lower()) %} </g>
+    <g transform="translate(76,  462)"> {% ae_led((track1step6  or 'OFF').lower()) %} </g>
+    <g transform="translate(76,  514)"> {% ae_led((track1step7  or 'OFF').lower()) %} </g>
+    <g transform="translate(76,  567)"> {% ae_led((track1step8  or 'OFF').lower()) %} </g>
+    <g transform="translate(173, 200)"> {% ae_led((track1step9  or 'OFF').lower()) %} </g>
+    <g transform="translate(173, 253)"> {% ae_led((track1step10 or 'OFF').lower()) %} </g>
+    <g transform="translate(173, 305)"> {% ae_led((track1step11 or 'OFF').lower()) %} </g>
+    <g transform="translate(173, 358)"> {% ae_led((track1step12 or 'OFF').lower()) %} </g>
+    <g transform="translate(173, 410)"> {% ae_led((track1step13 or 'OFF').lower()) %} </g>
+    <g transform="translate(173, 462)"> {% ae_led((track1step14 or 'OFF').lower()) %} </g>
+    <g transform="translate(173, 514)"> {% ae_led((track1step15 or 'OFF').lower()) %} </g>
+    <g transform="translate(173, 567)"> {% ae_led((track1step16 or 'OFF').lower()) %} </g>
+    <g transform="translate(269, 200)"> {% ae_led('on')  %} </g>
+    <g transform="translate(269, 253)"> {% ae_led('off') %} </g>
+    <g transform="translate(269, 305)"> {% ae_led('off') %} </g>
+    <g transform="translate(269, 358)"> {% ae_led('off') %} </g>
+  </svg>
+{{/render_svg}}"
+shape=plaintext
+label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="0">
+    <TR>
+      <TD FIXEDSIZE="true"             ROWSPAN="50" HEIGHT="480" WIDTH="11"                      ></TD>
+      <TD FIXEDSIZE="true" COLSPAN="4"              HEIGHT="23"  WIDTH="217"                     ></TD>
+      <TD FIXEDSIZE="true"             ROWSPAN="50" HEIGHT="480" WIDTH="12"                      ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_clk"          ></TD>
+      <TD FIXEDSIZE="true" COLSPAN="2" ROWSPAN="15" HEIGHT="86"  WIDTH="210"                     ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_out1"         ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_reset"        ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_mute1"        ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_out2"         ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="8"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="8"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_mute2"        ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_repeatcv"     ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_out3"         ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_bclk"         ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_bstart"       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_out4"         ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_bstop"        ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true" COLSPAN="4"              HEIGHT="37"  WIDTH="217"                     ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true" COLSPAN="3" ROWSPAN="15" HEIGHT="86"  WIDTH="213"                     ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_1"            ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_2"            ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_3"            ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_4"            ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_5"            ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_6"            ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_7"            ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="8"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_8"            ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true" COLSPAN="4"              HEIGHT="21"  WIDTH="217"                     ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true" COLSPAN="3" ROWSPAN="15" HEIGHT="87"  WIDTH="213"                     ></TD>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_9"            ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_10"           ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_11"           ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_12"           ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_13"           ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_14"           ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_15"           ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="9"   WIDTH="3"                       ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_16"           ></TD>
+    </TR>
+    <TR>
+      <TD FIXEDSIZE="true" COLSPAN="4"              HEIGHT="140" WIDTH="217"                     ></TD>
+    </TR>
+  </TABLE>
+>
