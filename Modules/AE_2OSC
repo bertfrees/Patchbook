@@ -14,18 +14,37 @@ ports:
   - saw2
   - pulse2
 params:
-  pulsewidth: /([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°/
+  pulsewidth1: /([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°/
   freq1:      /([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°/
   freq2:      /([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°/
+lambdas:
+  ae_pot: |
+    <g transform="rotate({% argv[0] %}, 0, 0)">
+      <circle cx="0" cy="0" r="19" fill="#000"/>
+      <rect x="-2" y="4" height="12" width="5" fill="#fff"/>
+    </g>
 ---
-image="{{curdir}}/AE_2OSC.png"
+image="{{#render_svg}}
+  <svg xmlns="http://www.w3.org/2000/svg" width="160" height="640">
+    <image x="0" y="0" width="160" height="640" xlink:href="AE_2OSC.png" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+    <g transform="translate(62, 347)">
+      {% ae_pot(pulsewidth1 or '40') %}
+    </g>
+    <g transform="translate(62, 443)">
+      {% ae_pot(freq1 or '40') %}
+    </g>
+    <g transform="translate(62, 539)">
+      {% ae_pot(freq2 or '40') %}
+    </g>
+  </svg>
+{{/render_svg}}"
 shape=plaintext
 label=<
   <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="0">
     <TR>
-      <TD FIXEDSIZE="true"             ROWSPAN="23" HEIGHT="480" WIDTH="12"                      ></TD>
+      <TD FIXEDSIZE="true"             ROWSPAN="17" HEIGHT="480" WIDTH="12"                      ></TD>
       <TD FIXEDSIZE="true" COLSPAN="4"              HEIGHT="24"  WIDTH="96"                      ></TD>
-      <TD FIXEDSIZE="true"             ROWSPAN="23" HEIGHT="480" WIDTH="12"                      ></TD>
+      <TD FIXEDSIZE="true"             ROWSPAN="17" HEIGHT="480" WIDTH="12"                      ></TD>
     </TR>
     <TR>
       <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_cv1"          ></TD>
@@ -89,28 +108,7 @@ label=<
       <TD FIXEDSIZE="true"                          HEIGHT="3"   WIDTH="3"  PORT="_pulse2"       ></TD>
     </TR>
     <TR>
-      <TD FIXEDSIZE="true" COLSPAN="4"              HEIGHT="135" WIDTH="96"                      ></TD>
-    </TR>
-    <TR>
-      <TD FIXEDSIZE="true" COLSPAN="2"              HEIGHT="30" WIDTH="50"                       ></TD>
-      <TD FIXEDSIZE="true" COLSPAN="2"              HEIGHT="30" WIDTH="46"                       > {{pulsewidth}} </TD>
-    </TR>
-    <TR>
-      <TD FIXEDSIZE="true" COLSPAN="4"              HEIGHT="42" WIDTH="96"                       ></TD>
-    </TR>
-    <TR>
-      <TD FIXEDSIZE="true" COLSPAN="2"              HEIGHT="30" WIDTH="50"                       ></TD>
-      <TD FIXEDSIZE="true" COLSPAN="2"              HEIGHT="30" WIDTH="46"                       > {{freq1}} </TD>
-    </TR>
-    <TR>
-      <TD FIXEDSIZE="true" COLSPAN="4"              HEIGHT="42" WIDTH="96"                       ></TD>
-    </TR>
-    <TR>
-      <TD FIXEDSIZE="true" COLSPAN="2"              HEIGHT="30" WIDTH="50"                       ></TD>
-      <TD FIXEDSIZE="true" COLSPAN="2"              HEIGHT="30" WIDTH="46"                       > {{freq2}} </TD>
-    </TR>
-    <TR>
-      <TD FIXEDSIZE="true" COLSPAN="4"              HEIGHT="61" WIDTH="96"                       ></TD>
+      <TD FIXEDSIZE="true" COLSPAN="4"              HEIGHT="370" WIDTH="96"                       ></TD>
     </TR>
   </TABLE>
 >
