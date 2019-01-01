@@ -1,0 +1,349 @@
+{
+  "AE_2OSC": {
+    "ports": [
+      "cv1",
+      "pwm1",
+      "sync1",
+      "cv2",
+      "pwm2",
+      "sync2",
+      "buscv",
+      "busctrl",
+      "square1",
+      "saw1",
+      "pulse1",
+      "square2",
+      "saw2",
+      "pulse2"
+    ],
+    "params": {
+      "pulsewidth1": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "freq1": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "freq2": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°"
+    }
+  },
+  "AE_2SH": {
+    "ports": [
+      "in1",
+      "trig1",
+      "in2",
+      "trig2",
+      "out1",
+      "out2"
+    ]
+  },
+  "AE_2VCA": {
+    "ports": [
+      "in1",
+      "cv1",
+      "in2",
+      "cv2",
+      "out1",
+      "out2"
+    ],
+    "params": {
+      "cv1": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "cv2": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°"
+    }
+  },
+  "AE_3VCSWITCH": {
+    "ports": [
+      "io1",
+      "gate1",
+      "io2",
+      "gate2",
+      "io3",
+      "gate3",
+      "5v",
+      "busgate",
+      "1a",
+      "1b",
+      "2a",
+      "2b",
+      "3a",
+      "3b"
+    ]
+  },
+  "AE_BEATDIVIDER": {
+    "ports": [
+      "clk",
+      "reset",
+      "busclk",
+      "busstart",
+      "outa",
+      "outb"
+    ],
+    "params": {
+      "outbmode": "DOTTED|TRIPLET",
+      "div": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°"
+    }
+  },
+  "AE_DELAY": {
+    "ports": [
+      "in",
+      "cv",
+      "in2",
+      "in3",
+      "out",
+      "dry",
+      "wet"
+    ],
+    "params": {
+      "delaytime": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "feedback": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "drywet": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°"
+    }
+  },
+  "AE_DIVIDER": {
+    "ports": [
+      "clk",
+      "reset",
+      "busclk",
+      "busstart",
+      "busstop",
+      "busgate",
+      "1",
+      "2",
+      "4",
+      "8",
+      "16",
+      "32",
+      "64",
+      "128"
+    ]
+  },
+  "AE_ENV": {
+    "ports": [
+      "gt1",
+      "gt2",
+      "busgate",
+      "busctrl",
+      "out"
+    ],
+    "params": {
+      "sustain": "FULL|ZERO",
+      "timerange": "SLOW|FAST",
+      "attack": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "decay": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°"
+    }
+  },
+  "AE_FILTER": {
+    "ports": [
+      "in",
+      "cv1",
+      "cv2",
+      "buscv",
+      "busctrl",
+      "lp",
+      "bp",
+      "hp"
+    ],
+    "params": {
+      "freq": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "cv1": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "resonance": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°"
+    }
+  },
+  "AE_LFO": {
+    "ports": [
+      "sync",
+      "pwm",
+      "sync",
+      "buscv",
+      "busctrl",
+      "square",
+      "triangle",
+      "pulse"
+    ],
+    "params": {
+      "timerange": "SLOW|FAST",
+      "shape": "SAW|TRIANGLE",
+      "rate": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "pulsewidth": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°"
+    }
+  },
+  "AE_MIXER44": {
+    "ports": [
+      "a1",
+      "a2",
+      "a3",
+      "a4",
+      "b1",
+      "b2",
+      "b3",
+      "b4",
+      "outa",
+      "outb"
+    ],
+    "params": {
+      "levela1": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "levela2": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "levela3": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "levela4": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°"
+    }
+  },
+  "AE_NOISE": {
+    "ports": [
+      "cv",
+      "buscv",
+      "busctrl",
+      "aout",
+      "dout",
+      "crout"
+    ],
+    "params": {
+      "rate": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°"
+    }
+  },
+  "AE_SVFILTER": {
+    "ports": [
+      "inh",
+      "inl",
+      "cv1",
+      "cv2",
+      "buscv",
+      "busctrl",
+      "lp",
+      "bp",
+      "hp"
+    ],
+    "params": {
+      "freq": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "cv1": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "resonance": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°"
+    }
+  },
+  "AE_TRIQ164": {
+    "ports": [
+      "clk",
+      "reset",
+      "mute1",
+      "mute2",
+      "repeatcv",
+      "bclk",
+      "bstart",
+      "bstop",
+      "out1",
+      "out2",
+      "out3",
+      "out4",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16"
+    ],
+    "params": {
+      "track1step1": "ON|OFF",
+      "track1step2": "ON|OFF",
+      "track1step3": "ON|OFF",
+      "track1step4": "ON|OFF",
+      "track1step5": "ON|OFF",
+      "track1step6": "ON|OFF",
+      "track1step7": "ON|OFF",
+      "track1step8": "ON|OFF",
+      "track1step9": "ON|OFF",
+      "track1step10": "ON|OFF",
+      "track1step11": "ON|OFF",
+      "track1step12": "ON|OFF",
+      "track1step13": "ON|OFF",
+      "track1step14": "ON|OFF",
+      "track1step15": "ON|OFF",
+      "track1step16": "ON|OFF",
+      "track2step1": "ON|OFF",
+      "track2step2": "ON|OFF",
+      "track2step3": "ON|OFF",
+      "track2step4": "ON|OFF",
+      "track2step5": "ON|OFF",
+      "track2step6": "ON|OFF",
+      "track2step7": "ON|OFF",
+      "track2step8": "ON|OFF",
+      "track2step9": "ON|OFF",
+      "track2step10": "ON|OFF",
+      "track2step11": "ON|OFF",
+      "track2step12": "ON|OFF",
+      "track2step13": "ON|OFF",
+      "track2step14": "ON|OFF",
+      "track2step15": "ON|OFF",
+      "track2step16": "ON|OFF",
+      "track3step1": "ON|OFF",
+      "track3step2": "ON|OFF",
+      "track3step3": "ON|OFF",
+      "track3step4": "ON|OFF",
+      "track3step5": "ON|OFF",
+      "track3step6": "ON|OFF",
+      "track3step7": "ON|OFF",
+      "track3step8": "ON|OFF",
+      "track3step9": "ON|OFF",
+      "track3step10": "ON|OFF",
+      "track3step11": "ON|OFF",
+      "track3step12": "ON|OFF",
+      "track3step13": "ON|OFF",
+      "track3step14": "ON|OFF",
+      "track3step15": "ON|OFF",
+      "track3step16": "ON|OFF",
+      "track4step1": "ON|OFF",
+      "track4step2": "ON|OFF",
+      "track4step3": "ON|OFF",
+      "track4step4": "ON|OFF",
+      "track4step5": "ON|OFF",
+      "track4step6": "ON|OFF",
+      "track4step7": "ON|OFF",
+      "track4step8": "ON|OFF",
+      "track4step9": "ON|OFF",
+      "track4step10": "ON|OFF",
+      "track4step11": "ON|OFF",
+      "track4step12": "ON|OFF",
+      "track4step13": "ON|OFF",
+      "track4step14": "ON|OFF",
+      "track4step15": "ON|OFF",
+      "track4step16": "ON|OFF"
+    }
+  },
+  "AE_VCO": {
+    "ports": [
+      "cv",
+      "cv2",
+      "mod",
+      "pwm",
+      "sync",
+      "buscv",
+      "saw",
+      "triangle",
+      "square"
+    ],
+    "params": {
+      "moddepth": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "modtype": "FREQ|PW",
+      "coarse": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "fine": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "pulsewidth": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°"
+    }
+  },
+  "AE_WAVEFOLDER": {
+    "ports": [
+      "in",
+      "cvshp",
+      "cv2",
+      "buscv",
+      "busctrl",
+      "out"
+    ],
+    "params": {
+      "drive": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "shapecv": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°",
+      "shape": "([4-9][0-9]|[12][0-9][0-9]|3[01][0-9]|320)°"
+    }
+  }
+}

@@ -1,0 +1,190 @@
+<!doctype html>
+<title>PatchBook Editor</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://codemirror.net/lib/codemirror.css"></link>
+<link rel="stylesheet" href="https://codemirror.net/addon/hint/show-hint.css">
+<style>
+	.CodeMirror {
+		font-size: 125%;
+		height: auto;
+	}
+	.CodeMirror-hints {
+		font-size: 125%;
+	}
+	.cm-s-default {
+		color: #ccc;
+	}
+	.cm-s-default .cm-comment {
+		color: #aaa;
+	}
+	.cm-s-default .cm-module {
+		color: #5b5;
+		text-decoration: underline;
+	}
+	.cm-s-default .cm-param {
+		color: #dc0;
+		text-decoration: underline;
+	}
+	.cm-s-default .cm-port {
+		color: #ffaa33;
+		text-decoration: underline;
+	}
+	.cm-s-default .cm-value {
+		color: #c7f;
+		text-decoration: underline;
+	}
+	.cm-s-default .cm-connection {
+		color: #1070ff;
+	}
+	.cm-s-default .cm-unknown {
+		font-style: italic;
+	}
+	.cm-s-default .cm-error {
+		color: red;
+		font-weight: bold;
+	}
+	.CodeMirror-line.error {
+		background-color: #ffeefd;
+	}
+</style>
+<script src="https://codemirror.net/lib/codemirror.js"></script>
+<script src="https://codemirror.net/addon/hint/show-hint.js"></script>
+<script src="codemirror-mode.js"></script>
+
+<h1>PatchBook Editor</h1>
+<textarea id="patch">* AE_2OSC: freq2 = 40°
+
+* AE_VCO:
+| modtype  = FREQ
+| moddepth = 320°
+| coarse   = 190°
+| fine     = 280°
+| pulsewidth = 40°
+
+* AE_NOISE: rate = 40°
+
+* AE_LFO 1:
+| timerange  = FAST
+| shape      = TRIANGLE
+| rate       = 220°
+| pulsewidth = 40°
+
+* AE_LFO 2:
+| timerange  = SLOW
+| shape      = TRIANGLE
+| rate       = 150°
+| pulsewidth = 40°
+
+* AE_FILTER 1:
+| freq      = 95°
+| cv1       = 320°
+| resonance = 40°
+
+* AE_FILTER 2:
+| freq      = 40°
+| cv1       = 320°
+| resonance = 40°
+
+* AE_ENV 1:
+| sustain   = FULL
+| timerange = SLOW
+| attack    = 130°
+| decay     = 115°
+
+* AE_ENV 2:
+| sustain   = FULL
+| timerange = SLOW
+| attack    = 210°
+| decay     = 70°
+
+* AE_2VCA 1: cv1 = 320°
+
+* AE_BEATDIVIDER:
+| outbmode = TRIPLET
+| div      = 270°
+
+* AE_TRIQ164:
+| track1step1  = ON
+| track1step2  = OFF
+| track1step3  = ON
+| track1step4  = OFF
+| track1step5  = ON
+| track1step6  = OFF
+| track1step7  = ON
+| track1step8  = OFF
+| track1step9  = ON
+| track1step10 = OFF
+| track1step11 = ON
+| track1step12 = OFF
+| track1step13 = ON
+| track1step14 = OFF
+| track1step15 = ON
+| track1step16 = OFF
+| track2step1  = OFF
+| track2step2  = ON
+| track2step3  = OFF
+| track2step4  = ON
+| track2step5  = OFF
+| track2step6  = ON
+| track2step7  = OFF
+| track2step8  = ON
+| track2step9  = ON
+| track2step10 = OFF
+| track2step11 = ON
+| track2step12 = OFF
+| track2step13 = ON
+| track2step14 = OFF
+| track2step15 = ON
+| track2step16 = OFF
+
+* AE_MIXER44:
+| levela1 = 180°
+| levela2 = 320°
+
+* AE_WAVEFOLDER:
+| drive   = 320°
+| shapecv = 180°
+| shape   = 180°
+
+* AE_DELAY:
+| delaytime = 180°
+| feedback  = 270°
+| drywet    = 320°
+
+- AE_2OSC        (square2)  -> AE_3VCSWITCH   (1a)
+- AE_2OSC        (pulse2)   -> AE_3VCSWITCH   (2b)
+- AE_VCO         (saw)      -> AE_FILTER 1    (in)
+- AE_NOISE       (crout)    t> AE_2SH         (trig1)
+- AE_LFO 1       (triangle) c> AE_BEATDIVIDER (clk)
+- AE_LFO 1       (triangle) >> AE_WAVEFOLDER  (cvshp)
+- AE_LFO 2       (triangle) g> AE_ENV 1       (gt1)
+- AE_LFO 2       (triangle) >> AE_WAVEFOLDER  (cv2)
+- AE_LFO 2       (triangle) >> AE_FILTER 1    (cv1)
+- AE_FILTER 1    (lp)       -> AE_2VCA 1      (in1)
+- AE_FILTER 2    (hp)       -> AE_MIXER44     (a2)
+- AE_ENV 1       (out)      >> AE_2VCA 1      (cv1)
+- AE_ENV 2       (out)      >> AE_FILTER 2    (cv2)
+- AE_2VCA 1      (out1)     -> AE_DELAY       (in)
+- AE_2VCA 1      (out1)     -> AE_3VCSWITCH   (2a)
+- AE_2VCA 2      (out1)     >> AE_2OSC        (pwm2)
+- AE_BEATDIVIDER (outa)     c> AE_TRIQ164     (clk)
+- AE_BEATDIVIDER (outb)     >> AE_2SH         (in1)
+- AE_TRIQ164     (out1)     g> AE_3VCSWITCH   (gate2)
+- AE_TRIQ164     (out2)     g> AE_3VCSWITCH   (gate1)
+- AE_WAVEFOLDER  (out)      -> AE_FILTER 2    (in)
+- AE_2SH         (out1)     g> AE_ENV 2       (gt1)
+- AE_3VCSWITCH   (io2)      -> AE_3VCSWITCH   (1b)
+- AE_3VCSWITCH   (io1)      -> AE_VCO         (mod)
+- AE_DELAY       (out)      -> AE_MIXER44     (a1)
+- AE_DELAY       (dry)      -> AE_WAVEFOLDER  (in)
+</textarea>
+<script>
+	var editor = CodeMirror.fromTextArea(document.getElementById("patch"), {
+		mode:  "patchbook",
+	});
+	editor.on("keyup", function (cm, event) {
+		if (!cm.state.completionActive && event.keyCode != 13 && event.keyCode != 27) {
+			CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
+		}
+	});
+</script>
