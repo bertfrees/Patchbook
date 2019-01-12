@@ -32,6 +32,7 @@
         return {
           nextTokens: [],
           currentModule: null,
+          currentParam: null,
           singleLineParams: false,
           multiLineParams: false,
         };
@@ -47,6 +48,7 @@
           }
           return nextToken.type;
         }
+        state.currentParam = null;
         if (stream.peek() == "/") {
           stream.next();
           if (stream.eat("/")) {
@@ -65,11 +67,20 @@
             stream.eatSpace();
             var m = stream.match(/([^=|]+?)(( *= *)([^ |\/=][^|\/=]*?)?)? *(\/|$)/, false);
             if (m) {
-              var paramConstraint = state.currentModule in modulesData
-                ? (modulesData[state.currentModule].params || {})[m[1]] : null;
+              var param;
+              var paramConstraint;
+              if (state.currentModule in modulesData
+                  && modulesData[state.currentModule].params
+                  && m[1] in modulesData[state.currentModule].params) {
+                param = m[1];
+                paramConstraint = modulesData[state.currentModule].params[param];
+              } else {
+                param = paramConstraint = null;
+              }
               state.nextTokens.push({
                 string: m[1],
-                type: "param" + (paramConstraint === undefined ? " error line-error" : m[2] ? "" : " line-error")});
+                type: "param" + (paramConstraint === undefined ? " error line-error" : m[2] ? "" : " line-error"),
+                state: {currentParam: param}});
               if (m[4]) {
                 var invalidParam = paramConstraint && !paramConstraint.test(m[4]);
                 state.nextTokens.push({string: m[3], type: null});
@@ -205,11 +216,20 @@
           stream.eatSpace();
           var m = stream.match(/([^=|]+?)(( *= *)([^ |\/=][^|\/=]*?)?)?( *)($|\/|((\| *)([^ \/])?))/, false);
           if (m) {
-            var paramConstraint = state.currentModule in modulesData
-              ? (modulesData[state.currentModule].params || {})[m[1]] : null;
+            var param;
+            var paramConstraint;
+            if (state.currentModule in modulesData
+                && modulesData[state.currentModule].params
+                && m[1] in modulesData[state.currentModule].params) {
+              param = m[1];
+              paramConstraint = modulesData[state.currentModule].params[param];
+            } else {
+              param = paramConstraint = null;
+            }
             state.nextTokens.push({
               string: m[1],
-              type: "param" + (paramConstraint === undefined ? " error line-error" : m[2] ? "" : " line-error")});
+              type: "param" + (paramConstraint === undefined ? " error line-error" : m[2] ? "" : " line-error"),
+              state: {currentParam: param}});
             if (m[4]) {
               var invalidParam = paramConstraint && !paramConstraint.test(m[4]);
               state.nextTokens.push({string: m[3], type: null});
@@ -280,6 +300,7 @@
           if (!editor.getLine(cursor.line).substring(end).match(/^ *=/)) {
             CodeMirror.on(r, "pick", function(picked) {
               editor.getDoc().replaceRange(" = ", {line: cursor.line, ch: start + picked.length});
+              CodeMirror.commands.autocomplete(editor, null, {completeSingle: false});
             });
           }
           return r;
@@ -310,8 +331,173 @@
           }
           return r;
         }
+      } else if (token.state.currentParam
+                 && (types.includes("value") || types.includes("expect-value"))) {
+        var candidates = regexToPossibleValues(modulesData[token.state.currentModule].params[token.state.currentParam]);
+        var word = types.includes("value") ? token.string : "";
+        var start = types.includes("value") ? token.start : cursor.ch;
+        var end = types.includes("value") ? token.end : cursor.ch;
+        candidates = candidates.filter(x => x.startsWith(word));
+        if (candidates.length > 0 && !(candidates.length == 1 && candidates[0] == word)) {
+          return {
+            list: candidates,
+            from: CodeMirror.Pos(cursor.line, start),
+            to: CodeMirror.Pos(cursor.line, end)
+          }
+        }
       }
     }
     return null;
   });
+  
+  function regexToPossibleValues(regex, opening) {
+    if (regex instanceof Array) {
+      if (opening != "(" && opening != "[" && opening) {
+        throw new Error("illegal argument");
+      }
+      var values = [];
+      while (true) {
+        if (regex.length == 0) {
+          return values;
+        }
+        var c = regex[0];
+        var escape = false;
+        if (c == "\\") {
+          regex.shift();
+          if (regex.length == 0) {
+            throw new Error();
+          }
+          escape = true;
+          c = regex[0];
+        }
+        if (opening == "[") {
+          if (escape) {
+            regex.shift();
+            values.push(c);
+          } else if (c == "]") {
+            if (values.length == 0) {
+              throw new Error();
+            }
+            return values;
+          } else if (c == "-") {
+            if (values.length == 0 || regex.length <= 1 || regex[1] == "]") {
+              throw new Error("todo");
+            } else if (regex[1] == "^" ||
+                       regex[1] == "\\" ||
+                       regex[1] == "?" ||
+                       regex[1] == "$" ||
+                       regex[1] == "*" ||
+                       regex[1] == "+" ||
+                       regex[1] == "." ||
+                       regex[1] == "-" ||
+                       regex[1] == "|" ||
+                       regex[1] == "[" ||
+                       regex[1] == "(" ||
+                       regex[1] == ")" ||
+                       regex[1] == "{" ||
+                       regex[1] == "}") {
+              throw new Error("todo");
+            } else {
+              regex.shift();
+              var c1 = values[values.length - 1].codePointAt(0);
+              var c2 = regex.shift().codePointAt(0);
+              if (c2 <= c1) {
+                throw new Error();
+              }
+              for (var i = c1 + 1; i <= c2; i++) {
+                values.push(String.fromCodePoint(i));
+              }
+            }
+          } else if (c == "^" ||
+                     c == "?" ||
+                     c == "$" ||
+                     c == "*" ||
+                     c == "+" ||
+                     c == "." ||
+                     c == "|" ||
+                     c == "[" ||
+                     c == "(" ||
+                     c == ")" ||
+                     c == "{" ||
+                     c == "}") {
+            throw new Error("todo");
+          } else {
+            regex.shift();
+            values.push(c);
+          }
+        } else if (escape) {
+          regex.shift();
+          if (values.length == 0) {
+            values.push(c);
+          } else {
+            for (var i = 0; i < values.length; i++) {
+              values[i] += c;
+            }
+          }
+        } else if (opening == "(" && c == ")") {
+          return values;
+        } else if (c == "(" || c == "[") {
+          regex.shift();
+          var v = regexToPossibleValues(regex, c);
+          if (regex.length == 0 || (c == "(" && regex[0] != ")" || c == "[" && regex[0] != "]")) {
+            throw new Error("unmatched parentheses");
+          }
+          regex.shift();
+          if (values.length == 0) {
+            values = v;
+          } else {
+            var newValues = [];
+            for (var i = 0; i < values.length; i++) {
+              for (var j = 0; j < v.length; j++) {
+                newValues.push(values[i] + v[j]);
+              }
+            }
+            values = newValues;
+          }
+        } else if (c == "|") {
+          regex.shift();
+          values = values.concat(regexToPossibleValues(regex, opening));
+        } else if (c == "^" && !opening && values.length == 0) {
+          regex.shift();
+        } else if (c == "$" && !opening && regex.length == 1) {
+          regex.shift();
+        } else if (c == "^" ||
+                   c == "?" ||
+                   c == "$" ||
+                   c == "*" ||
+                   c == "+" ||
+                   c == "." ||
+                   c == "]" ||
+                   c == ")" ||
+                   c == "{" ||
+                   c == "}") {
+          throw new Error("todo");
+        } else {
+          regex.shift();
+          if (values.length == 0) {
+            values.push(c);
+          } else {
+            for (var i = 0; i < values.length; i++) {
+              values[i] += c;
+            }
+          }
+        }
+      }
+      if (values.length == 0) {
+        throw new Error();
+      }
+      if (opening) {
+        throw new Error();
+      }
+      return values;
+    } else if (regex instanceof RegExp) {
+      return regexToPossibleValues(regex.toString().slice(1, -1), opening);
+    } else { // String
+      var array = [];
+      for (var i = 0, len = regex.length; i < len; i++) {
+        array.push(regex.charAt(i));
+      }
+      return regexToPossibleValues(array, opening);
+    }
+  }
 });
